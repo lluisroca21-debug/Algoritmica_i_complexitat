@@ -384,3 +384,31 @@ main = do
   putStrLn "\n===== Exercici 5 ====="
   print (sumarQuadratsRec [1,2,3,4,5])
   print (sumarQuadratsMapFold [1,2,3,4,5])
+  
+  
+  
+  
+  
+  
+  
+    putStrLn "\n===== Laboratori 3 ====="
+
+  putStrLn "\n--- Exercici 1 (ADT formes) ---"
+  print (perimetre (Triangle 3))
+  print (area (Triangle 3))
+  print (perimetre (Cercle 2))
+  print (area (Cercle 2))
+
+  putStrLn "\n--- Exercici 2 (Poligon / Cercle) ---"
+  print (perimetre2 (Poligon 5 3))  -- pentàgon costat 3
+  print (area2 (Poligon 5 3))
+  print (perimetre2 (Cercle2 2))
+  print (area2 (Cercle2 2))
+
+  putStrLn "\n--- Exercicis 3..6 (ArbreB) ---"
+  let arbre = Node 10 (Node 5 Fulla (Node 7 Fulla Fulla)) (Node 20 Fulla Fulla)
+  print (sumaNodes arbre)          -- 10+5+7+20 = 42
+  print (arbreLlista arbre)        -- inordre: [5,7,10,20]
+  print (existeixValor arbre 7)    -- True
+  print (existeixValor arbre 99)   -- False
+  print (alçadaArbre arbre)        -- 3
