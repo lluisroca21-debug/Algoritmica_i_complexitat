@@ -18,7 +18,11 @@ fromIntegral -> converteix un enter en decimal
 floor -> arrodoneix cap a baix a l'enter més proper
 takeWhile -> agafa tots els caràcters consecutius iguals a x
 dropWhile -> elimina tots els caràcters consecutius iguals a x
-\ -> definir una funció-}
+\ -> definir una funció
+
+++ -> escrivim ++ per concatenar llistes
+max -> retorna l'alçada més gran de les dues
+let -> defineix una variable local-}
 
 -- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 -- Haskell notes de laboratori (1)
@@ -238,7 +242,6 @@ sumarQuadratsMapFold xs = foldl (+) 0 (map (\x -> x*x) xs) --map suma els quadra
 -- Exercici 1
 -- ===========================================================================
 
---definició del tipus de dades:
 data FormaGeometricaRegular --Definim una tipus de dades (Formes Geomètriques Regulars)
   = Triangle Float --Pot ser triangle amb float, o rectangle amb float, o pentagon amb float o hexagon amb float, o cercle amb float
   | Rectangle Float
@@ -262,63 +265,54 @@ area (Pentagon costat)  = (5/4) * (costat ^ 2) * (1 / tan (pi/5))
 area (Hexagon costat)   = (3 * sqrt 3 / 2) * (costat ^ 2)
 area (Cercle radi)      = pi * (radi ^ 2)
 
-
 -- ===========================================================================
 -- Exercici 2
 -- ===========================================================================
 
---definició del tipus de dades (polígon regular o cercle):
 data FormaGeometricaRegular2
-  = Poligon Int Float   -- Poligon n costat
-  | Cercle2 Float       -- Cercle2 radi
+  = Poligon Int Float --Poligon n costat
+  | Cercle2 Float --Cercle2 radi
 
 --perimetre2: perímetre usant un polígon parametritzat
 perimetre2 :: FormaGeometricaRegular2 -> Float
-perimetre2 (Poligon n costat) = fromIntegral n * costat
+perimetre2 (Poligon n costat) = fromIntegral n * costat --fromIntegral converteix un enter a decimal
 perimetre2 (Cercle2 radi)     = 2 * pi * radi
 
 --area2: àrea usant un polígon parametritzat
 area2 :: FormaGeometricaRegular2 -> Float
-area2 (Poligon n costat) =
-  (fromIntegral n * costat^2) / (4 * tan (pi / fromIntegral n))
+area2 (Poligon n costat) = (fromIntegral n * costat^2) / (4 * tan (pi / fromIntegral n))
 area2 (Cercle2 radi) = pi * radi^2
-
 
 -- ===========================================================================
 -- Exercici 3
 -- ===========================================================================
 
---definició de l'arbre binari:
-data ArbreB a = Fulla | Node a (ArbreB a) (ArbreB a)
+data ArbreB a = Fulla | Node a (ArbreB a) (ArbreB a) --Definim tipus de dades que es diu ArbreB de tipus polimòrfic (qualsevol tipus), que pot ser o fulla o node amb dos possibles fills
 
 --sumaNodes: suma els valors dels nodes de l’arbre
-sumaNodes :: Num a => ArbreB a -> a
-sumaNodes Fulla = 0
-sumaNodes (Node valor esquerre dret) = valor + sumaNodes esquerre + sumaNodes dret
-
+sumaNodes :: Num a => ArbreB a -> a --Ha de ser de tipus numerable (que es pugui comptar). Rep un arbre i retorna un nombre
+sumaNodes Fulla = 0 --Si l'arbre és fulla, és buit, la suma dona 0
+sumaNodes (Node valor esquerre dret) = valor + sumaNodes esquerre + sumaNodes dret --De manera recursiva suma el que hi ha al node més la suma dels subarbres
 
 -- ===========================================================================
 -- Exercici 4
 -- ===========================================================================
 
 --arbreLlista: recorre l’arbre en inordre i el converteix en llista
-arbreLlista :: ArbreB a -> [a]
+arbreLlista :: ArbreB a -> [a] --Rep un arbre i retorna una llista
 arbreLlista Fulla = []
-arbreLlista (Node valor esquerre dret) =
-  arbreLlista esquerre ++ [valor] ++ arbreLlista dret
-
+arbreLlista (Node valor esquerre dret) = arbreLlista esquerre ++ [valor] ++ arbreLlista dret --Escrivim ++ per concatenar llistes
 
 -- ===========================================================================
 -- Exercici 5
 -- ===========================================================================
 
 --existeixValor: comprova si un valor existeix dins l’arbre
-existeixValor :: Eq a => ArbreB a -> a -> Bool
-existeixValor Fulla _ = False
-existeixValor (Node valor esquerre dret) valorBuscat
+existeixValor :: Eq a => ArbreB a -> a -> Bool --El tipus a ha de poder comparar-se. Entra un arbre de tipus genèric comparable i un valor a comparar. Surt un booleà
+existeixValor Fulla _ = False --Si és fulla, és arbre buit, per tant, independentment del que busquis, no el trobaràs
+existeixValor (Node valor esquerre dret) valorBuscat --Apliquem la funció sobre el node amb les característiques (...) i busquem el valor "valorBuscat"
   | valor == valorBuscat = True
-  | otherwise = existeixValor esquerre valorBuscat || existeixValor dret valorBuscat
-
+  | otherwise = existeixValor esquerre valorBuscat || existeixValor dret valorBuscat --Si no el troba, busquem en els subarbres esquerre i dret
 
 -- ===========================================================================
 -- Exercici 6
@@ -327,8 +321,7 @@ existeixValor (Node valor esquerre dret) valorBuscat
 --alçadaArbre: calcula l’alçada (profunditat màxima) d’un arbre binari
 alçadaArbre :: ArbreB a -> Int
 alçadaArbre Fulla = 0
-alçadaArbre (Node _ esquerre dret) = 1 + max (alçadaArbre esquerre) (alçadaArbre dret)
-
+alçadaArbre (Node _ esquerre dret) = 1 + max (alçadaArbre esquerre) (alçadaArbre dret) --max es queda amb l'alçada més gran de les dues
 
 -- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 -- Definim el main per a que compili el programa
@@ -336,8 +329,10 @@ alçadaArbre (Node _ esquerre dret) = 1 + max (alçadaArbre esquerre) (alçadaAr
 
 main :: IO ()
 main = do
- 
-  putStrLn "===== Exercici 2 ====="
+
+  putStrLn "===== Laboratori 1 ====="
+
+  putStrLn "\n===== Exercici 2 ====="
   print (myHead [1,2,3,4,5])
   print (myTail [1,2,3,4,5])
   print (myTake 3 [1,2,3,4,5])
@@ -363,6 +358,8 @@ main = do
   print (rotarLlista 7 [1,2,3,4,5])
   print (filtrarParells [1,2,3,4,5])
   
+  putStrLn "\n===== Laboratori 2 ====="  
+  
   putStrLn "\n===== Exercici 1 ====="
   print (buscarPrimers [1,2,3,4,5,6,7,8,9,10])
   print (runLengthEncoding "aaaabbbcca")  
@@ -385,13 +382,7 @@ main = do
   print (sumarQuadratsRec [1,2,3,4,5])
   print (sumarQuadratsMapFold [1,2,3,4,5])
   
-  
-  
-  
-  
-  
-  
-    putStrLn "\n===== Laboratori 3 ====="
+  putStrLn "\n===== Laboratori 3 ====="
 
   putStrLn "\n--- Exercici 1 (ADT formes) ---"
   print (perimetre (Triangle 3))
@@ -400,15 +391,15 @@ main = do
   print (area (Cercle 2))
 
   putStrLn "\n--- Exercici 2 (Poligon / Cercle) ---"
-  print (perimetre2 (Poligon 5 3))  -- pentàgon costat 3
+  print (perimetre2 (Poligon 5 3))
   print (area2 (Poligon 5 3))
   print (perimetre2 (Cercle2 2))
   print (area2 (Cercle2 2))
 
   putStrLn "\n--- Exercicis 3..6 (ArbreB) ---"
-  let arbre = Node 10 (Node 5 Fulla (Node 7 Fulla Fulla)) (Node 20 Fulla Fulla)
-  print (sumaNodes arbre)          -- 10+5+7+20 = 42
-  print (arbreLlista arbre)        -- inordre: [5,7,10,20]
-  print (existeixValor arbre 7)    -- True
-  print (existeixValor arbre 99)   -- False
-  print (alçadaArbre arbre)        -- 3
+  let arbre = Node 10 (Node 5 Fulla (Node 7 Fulla Fulla)) (Node 20 Fulla Fulla) --let defineix una variable local
+  print (sumaNodes arbre)
+  print (arbreLlista arbre)
+  print (existeixValor arbre 7)
+  print (existeixValor arbre 99)
+  print (alçadaArbre arbre)
